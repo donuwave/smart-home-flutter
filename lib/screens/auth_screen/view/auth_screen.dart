@@ -12,9 +12,6 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreen extends State<AuthScreen>
     with SingleTickerProviderStateMixin {
-  final _nameController = TextEditingController();
-  final _loginController = TextEditingController();
-  final _passwordController = TextEditingController();
   late PageController _pageController;
   late TabController _tabController;
   bool _obscureText = true;
@@ -59,15 +56,10 @@ class _AuthScreen extends State<AuthScreen>
                 controller: _pageController,
                 children: [
                   LoginForm(
-                    loginController: _loginController,
-                    passwordController: _passwordController,
                     obscureText: _obscureText,
                     togglePasswordVisibility: togglePasswordVisibility,
                   ),
                   RegistrationForm(
-                    nameController: _nameController,
-                    loginController: _loginController,
-                    passwordController: _passwordController,
                     obscureText: _obscureText,
                     togglePasswordVisibility: togglePasswordVisibility,
                   ),

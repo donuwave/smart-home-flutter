@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/screens/auth_screen/view/view.dart';
+import 'package:smart_home/config.dart';
 
 void main() {
+  AppConfig.setup();
   runApp(const MyApp());
 }
 
@@ -45,41 +47,5 @@ class MyApp extends StatelessWidget {
       ),
       routes: {"/": (context) => AuthScreen()},
     );
-  }
-}
-
-class ViniDetailsScreen extends StatefulWidget {
-  const ViniDetailsScreen({super.key});
-
-  @override
-  State<ViniDetailsScreen> createState() => _ViniDetailsScreenState();
-}
-
-class _ViniDetailsScreenState extends State<ViniDetailsScreen> {
-  String? viniName;
-
-  @override
-  void didChangeDependencies() {
-    final args = ModalRoute.of(context)?.settings.arguments;
-
-    if (args == null) {
-      print('object');
-      return;
-    }
-
-    if (args is! String) {
-      print('object str');
-    }
-
-    viniName = args as String;
-
-    setState(() {});
-
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(viniName ?? "ss")));
   }
 }

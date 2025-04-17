@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_home/services/auth_service.dart';
+import 'package:smart_home/entities/auth/service/view.dart';
+import 'package:smart_home/entities/auth/store/token_store.dart';
 
 class LoginForm extends StatefulWidget {
   final bool obscureText;
@@ -34,7 +35,11 @@ class LoginFormState extends State<LoginForm> {
 
       try {
         final response = await AuthService().login(login, password);
-        print(response);
+        await TokenManager.saveTokens(
+          response.accessToken,
+          response.refreshToken,
+        );
+        Navigator.pushReplacementNamed(context, '/');
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Успешный вход!')));
@@ -96,7 +101,7 @@ class LoginFormState extends State<LoginForm> {
               style: theme.textTheme.bodyMedium,
               focusNode: loginFocusNode,
               decoration: InputDecoration(
-                labelText: 'Логин',
+                labelText: 'Электронная почта',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),

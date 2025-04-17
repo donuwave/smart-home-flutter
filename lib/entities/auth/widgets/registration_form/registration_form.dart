@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_home/services/auth_service.dart';
+import 'package:smart_home/entities/auth/service/auth_service.dart';
 
 class RegistrationForm extends StatefulWidget {
   final bool obscureText;

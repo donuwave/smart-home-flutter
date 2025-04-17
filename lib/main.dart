@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_home/screens/auth_screen/view/view.dart';
-import 'package:smart_home/config.dart';
+import 'package:smart_home/shared/config.dart';
+import 'package:smart_home/shared/router.dart';
 
 void main() {
   AppConfig.setup();
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      routes: {"/": (context) => AuthScreen()},
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }

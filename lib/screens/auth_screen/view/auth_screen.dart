@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_home/features/auth_form/view.dart';
-import 'package:smart_home/features/registration_form/view.dart';
-import 'package:smart_home/screens/auth_screen/widgets/view.dart';
+import 'package:smart_home/entities/auth/widgets/auth_form/view.dart';
+import 'package:smart_home/entities/auth/widgets/registration_form/view.dart';
+import 'package:smart_home/entities/auth/widgets/auth_tab_bar/view.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -38,8 +38,6 @@ class _AuthScreen extends State<AuthScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

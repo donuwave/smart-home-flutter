@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smart_home/config.dart';
+import 'package:smart_home/shared/config.dart';
+import 'package:smart_home/entities/auth/widgets/auth_form/view.dart';
 
 class AuthService {
   static final String baseUrl = AppConfig.apiUrl;
 
-  Future<Map<String, dynamic>> login(String login, String password) async {
+  Future<AuthResponse> login(String login, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/v1/auth/login'),
       headers: {
@@ -20,7 +21,8 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body); // Успешный ответ
+      final Map<String, dynamic> decodedResponse = json.decode(response.body);
+      return AuthResponse.fromJson(decodedResponse);
     } else {
       throw Exception('Ошибка авторизации: ${response.statusCode}');
     }

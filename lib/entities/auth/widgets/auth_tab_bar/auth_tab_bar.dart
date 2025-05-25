@@ -17,9 +17,9 @@ class AuthTabBar extends StatelessWidget {
     return TabBar(
       controller: tabController,
       tabs: const [Tab(text: 'Вход'), Tab(text: 'Регистрация')],
-      labelColor: theme.colorScheme.primary,
+      labelColor: theme.primaryColor,
       unselectedLabelColor: Colors.grey,
-      indicatorColor: theme.colorScheme.primary,
+      indicatorColor: theme.primaryColor,
       physics: const NeverScrollableScrollPhysics(),
       onTap: (index) => pageController.jumpToPage(index),
     );

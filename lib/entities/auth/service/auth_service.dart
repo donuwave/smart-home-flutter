@@ -28,7 +28,7 @@ class AuthService {
     }
   }
 
-  Future<Map<String, dynamic>> register(String email, String password) async {
+  Future<AuthResponse> register(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/register'),
       headers: {'Content-Type': 'application/json'},

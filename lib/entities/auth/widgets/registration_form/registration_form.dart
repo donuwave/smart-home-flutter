@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/entities/auth/service/auth_service.dart';
+import 'package:smart_home/entities/auth/store/token_store.dart';
 
 class RegistrationForm extends StatefulWidget {
   final bool obscureText;
@@ -34,6 +35,12 @@ class RegistrationFormState extends State<RegistrationForm> {
 
       try {
         final response = await AuthService().register(login, password);
+        await TokenManager.saveTokens(
+          response.accessToken,
+          response.refreshToken,
+          response.userId,
+        );
+        Navigator.pushReplacementNamed(context, '/home-list');
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Успешный вход!')));
@@ -161,7 +168,7 @@ class RegistrationFormState extends State<RegistrationForm> {
                   onPressed: () => register(context),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                      theme.colorScheme.primary,
+                      theme.primaryColor,
                     ),
                   ),
                   child: Text(

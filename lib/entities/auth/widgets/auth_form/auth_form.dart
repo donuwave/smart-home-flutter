@@ -38,8 +38,9 @@ class LoginFormState extends State<LoginForm> {
         await TokenManager.saveTokens(
           response.accessToken,
           response.refreshToken,
+          response.userId,
         );
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home-list');
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Успешный вход!')));
@@ -159,7 +160,7 @@ class LoginFormState extends State<LoginForm> {
                   onPressed: () => login(context),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                      theme.colorScheme.primary,
+                      theme.primaryColor,
                     ),
                   ),
                   child: Text(

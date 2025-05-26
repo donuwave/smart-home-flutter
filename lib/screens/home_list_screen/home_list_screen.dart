@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/entities/auth/store/token_store.dart';
 import 'package:smart_home/entities/home/service/home_response.dart';
 import 'package:smart_home/entities/home/service/home_service.dart';
+import 'package:smart_home/screens/home_screen/view/home_screen.dart';
 
 class HomeListScreen extends StatefulWidget {
   const HomeListScreen({super.key});
@@ -41,8 +43,6 @@ class _HomeListState extends State<HomeListScreen> {
           itemBuilder: (context, index) {
             if (index < homes.length) {
               final item = homes[index];
-              // final participants = item.participants.join(', ');
-
               return Card(
                 color: theme.appBarTheme.surfaceTintColor,
                 elevation: 2,
@@ -84,7 +84,14 @@ class _HomeListState extends State<HomeListScreen> {
                     Icons.chevron_right,
                     color: Colors.white,
                   ),
-                  onTap: () {}, // детали дома
+                  onTap: () {
+                    TokenManager.setHomeId(item.id);
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/',
+                      arguments: item.id,
+                    );
+                  }, // детали дома
                 ),
               );
             } else {

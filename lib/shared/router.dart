@@ -9,8 +9,14 @@ import 'package:smart_home/widgets/navigation/navigation.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final accessToken = TokenManager.getAccessToken();
-    final homeId = TokenManager.getHomeId();
+    final accessToken = TokenManager.accessTokenSync;
+
+    final int? argHomeId =
+        settings.arguments is int ? settings.arguments as int : null;
+
+    final int? storedHomeId = TokenManager.homeIdSync;
+
+    final int? homeId = argHomeId ?? storedHomeId;
 
     Widget wrapWithHeader(Widget page, String title) {
       return Scaffold(appBar: Header(title: title), body: page);
@@ -36,7 +42,7 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => wrapWithNav(const HomeScreen()),
+          builder: (_) => wrapWithNav(HomeScreen(homeId: homeId)),
           settings: settings,
         );
 

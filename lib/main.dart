@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_home/api/firebase/firebase_api.dart';
 import 'package:smart_home/api/firebase/firebase_options.dart';
+import 'package:smart_home/entities/auth/store/token_store.dart';
 import 'package:smart_home/shared/config.dart';
 import 'package:smart_home/shared/router.dart';
 
@@ -15,6 +16,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
 
   await FirebaseApi().initNotifications();
+  await TokenManager.init();
 
   runApp(const MyApp());
 }

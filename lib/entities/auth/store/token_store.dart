@@ -42,6 +42,11 @@ class TokenManager {
   static Future<String?> getHomeId() => _storage.read(key: 'home_id');
   static Future<String?> getUserId() => _storage.read(key: 'user_id');
 
+  static Future<void> clearHomeId() async {
+    await _storage.delete(key: "home_id");
+    _homeId = null;
+  }
+
   static Future<void> clearTokens() async {
     await _storage.delete(key: 'accessToken');
     await _storage.delete(key: 'refreshToken');

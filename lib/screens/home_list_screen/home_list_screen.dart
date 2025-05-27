@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smart_home/entities/auth/store/token_store.dart';
 import 'package:smart_home/entities/home/service/home_response.dart';
 import 'package:smart_home/entities/home/service/home_service.dart';
-import 'package:smart_home/screens/home_screen/view/home_screen.dart';
 
 class HomeListScreen extends StatefulWidget {
   const HomeListScreen({super.key});
@@ -91,11 +90,10 @@ class _HomeListState extends State<HomeListScreen> {
                       '/',
                       arguments: item.id,
                     );
-                  }, // детали дома
+                  },
                 ),
               );
             } else {
-              // Кнопка «Добавить новый дом»
               return Center(
                 child: TextButton(
                   onPressed: () {

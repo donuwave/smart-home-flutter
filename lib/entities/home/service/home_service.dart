@@ -10,7 +10,6 @@ class HomeService {
 
   Future<List<HomeResponse>> getHomeList() async {
     final accessToken = await TokenManager.getAccessToken();
-
     final response = await http.post(
       Uri.parse("$baseUrl/api/v1/home/accessible"),
       headers: {

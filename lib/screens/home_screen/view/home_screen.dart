@@ -3,6 +3,8 @@ import 'package:smart_home/entities/auth/store/token_store.dart';
 import 'package:mjpeg_stream/mjpeg_stream.dart';
 import 'package:smart_home/entities/home/service/home_response.dart';
 import 'package:smart_home/entities/home/service/home_service.dart';
+import 'package:smart_home/entities/weather/view/weather_card.dart';
+import 'package:smart_home/screens/home_screen/widgets/greeting_text.dart';
 
 class HomeScreen extends StatefulWidget {
   final int homeId;
@@ -26,29 +28,101 @@ class HomeStateScreen extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     var children = [
-      const SizedBox(height: 60),
-
       FutureBuilder<HomeResponse>(
         future: _futureHome,
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
-            return const SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
+          // 2) Ошибка
           if (snap.hasError) {
-            return Text(
-              'Ошибка: ${snap.error}',
-              style: theme.textTheme.bodyMedium?.copyWith(color: Colors.red),
-            );
+            return Text('Ошибка: ${snap.error}');
           }
-          return Text(
-            'ID дома: ${snap.data!.id}',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+          // 3) Нет данных
+          final home = snap.data;
+          if (home == null) {
+            // Если дома нет — возвращаем пустой виджет или текст
+            return const SizedBox.shrink();
+            // или, например:
+            // return Center(child: Text('Дом не найден'));
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GreetingText(
+                name: "Daniil",
+                subtitle: 'Добро пожаловать в ${home.name}',
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                'ID дома: ${home.id}',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              WeatherCard(
+                description: 'Облачно',
+                location: 'Нижний Новгород, Россия',
+                temperature: '22°',
+                feelsLike: '27°C',
+                precipitation: '4%',
+                humidity: '66%',
+                wind: '16 км/ч',
+                icon: AssetImage('assets/vinni-pukh-v-png.png'),
+              ),
+
+              // SizedBox(
+              //   width: double.infinity,
+              //   height: 50,
+              //   child: ElevatedButton(
+              //     onPressed: () async {
+              //       try {
+              //         await TokenManager.clearTokens();
+              //         // ignore: use_build_context_synchronously
+              //         Navigator.pushReplacementNamed(context, '/login');
+              //       } catch (e) {}
+              //     },
+              //     style: ButtonStyle(
+              //       backgroundColor: WidgetStateProperty.all(
+              //         theme.primaryColor,
+              //       ),
+              //     ),
+              //     child: Text(
+              //       'Выйти',
+              //       style: theme.textTheme.bodyMedium?.copyWith(
+              //         color: const Color.fromRGBO(255, 255, 255, 1),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              Center(
+                child: TextButton(
+                  onPressed: () async {
+                    try {
+                      await TokenManager.clearHomeId();
+                      Navigator.pushReplacementNamed(context, '/home-list');
+                    } catch (e) {}
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    alignment: Alignment.center,
+                  ),
+                  child: Text(
+                    'Изменить дом',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontSize: 18,
+                      color: theme.primaryColor,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -59,48 +133,6 @@ class HomeStateScreen extends State<HomeScreen> {
       //   fit: BoxFit.cover,
       //   showLiveIcon: true,
       // ),
-      SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          onPressed: () async {
-            try {
-              await TokenManager.clearTokens();
-              Navigator.pushReplacementNamed(context, '/login');
-            } catch (e) {}
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(theme.primaryColor),
-          ),
-          child: Text(
-            'Выйти',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color.fromRGBO(255, 255, 255, 1),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          onPressed: () async {
-            try {
-              await TokenManager.clearTokens();
-              Navigator.pushReplacementNamed(context, '/home-list');
-            } catch (e) {}
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(theme.primaryColor),
-          ),
-          child: Text(
-            'home-list',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color.fromRGBO(255, 255, 255, 1),
-            ),
-          ),
-        ),
-      ),
     ];
 
     return Scaffold(

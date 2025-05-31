@@ -13,7 +13,7 @@ class GreetingText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Hello $name 👋',
+          'Добрый день, $name 👋',
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,

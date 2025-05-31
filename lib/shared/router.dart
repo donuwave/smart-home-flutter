@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smart_home/entities/auth/store/token_store.dart';
 import 'package:smart_home/screens/auth_screen/view/view.dart';
-import 'package:smart_home/screens/deices_screen/view/devices_screen.dart';
+import 'package:smart_home/screens/devices_screen/view/devices_screen.dart';
 import 'package:smart_home/screens/home_list_screen/home_list_screen.dart';
 import 'package:smart_home/screens/home_screen/view/view.dart';
 import 'package:smart_home/widgets/header/header.dart';
+import 'package:smart_home/widgets/header/header_with_back.dart';
 import 'package:smart_home/widgets/navigation/navigation.dart';
 
 class AppRouter {
@@ -22,6 +23,22 @@ class AppRouter {
       return Scaffold(appBar: Header(title: title), body: page);
     }
 
+    Widget wrapWithNav(Widget page) => NavigationBottomBar(child: page);
+
+    Widget wrapWithHeaderBack(Widget page) {
+      return Builder(
+        builder:
+            (context) => Scaffold(
+              appBar: HeaderWithBack(
+                onBack: () {
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+              ),
+              body: page,
+            ),
+      );
+    }
+
     if (accessToken == null) {
       return MaterialPageRoute(builder: (_) => const AuthScreen());
     }
@@ -36,8 +53,6 @@ class AppRouter {
         settings: settings,
       );
     }
-
-    Widget wrapWithNav(Widget page) => NavigationBottomBar(child: page);
 
     switch (settings.name) {
       case '/':
@@ -56,9 +71,16 @@ class AppRouter {
           settings: settings,
         );
 
+      case '/camera':
+        final deviceId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => wrapWithHeaderBack(DevicesScreen(deviceId: deviceId)),
+          settings: settings,
+        );
+
       case '/camers-list':
         return MaterialPageRoute(
-          builder: (_) => wrapWithNav(const DevicesScreen()),
+          builder: (_) => wrapWithNav(HomeScreen(homeId: homeId)),
           settings: settings,
         );
 
